@@ -1,0 +1,15 @@
+function rects = flattenPanel(sheer, ridge)
+
+k = size(sheer, 2);
+m = size(ridge, 2);
+if (k ~= m)
+    error("Bad sizes in flattenPanel");
+end
+
+p0 = [0; 0];
+p1 = [0, 1];
+for i=1:(k-1)
+    A = sheer(:, i);
+    B = ridge(:, i);
+    C = ridge(:, i+1);
+    D = sh(:, i+1);

@@ -1,0 +1,42 @@
+function huffman()
+beams = [3, 12, 20.5, 26, 28, 27, 24.5, 21];
+sheerHeights = [0, -2.5, -4.5, -6, -5.5, -5.5, -5, -4.5];
+ridgeHeights = [9, 12.25, 15.1,17.1,18, 17, 13.8, 8];
+stations = 24 * (0:7);
+
+sheerLine = [stations; beams; sheerHeights];
+ridgeLine = [stations; 0*beams; ridgeHeights];
+k = size(sheerLine, 2);
+res = flattenPanel(sheerLine, ridgeLine);
+
+skirtLengths = 1.5 + [20, 17, 14, 14,15, 16, 17.5, 19];
+
+%Sheer height above waterline - 20" at bow, 14" midships, 19" aft
+%Need seam allowance at ridge and bottom edge
+
+pSkirt = addSkirt(res, skirtLengths);
+
+pHem = addHem(res, 1.5); % add a 1.5-inch hem at both ends:double rub at bottom
+                        % trimmed down at top for flat-felled seam, then
+                        % covered with a "skunk" strip for water-proofness
+
+
+res = [res, pSkirt, pHem];
+close all;
+hold on; 
+c = 'b';
+for i = 1:(3*(k-1))
+    if (c == 'b')
+        c = 'r';
+    else
+        c = 'b';
+    end
+    range = 4*(i-1) + (1:4);
+    pts = res(:, range([1,2,3,4,1]));
+    plot(pts(1,:), pts(2,:), c);
+end
+hold off;
+axis equal;
+figure(gcf);
+
+
